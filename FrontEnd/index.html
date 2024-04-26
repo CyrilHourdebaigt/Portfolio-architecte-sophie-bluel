@@ -54,29 +54,31 @@
 		</section>
 		<section id="portfolio">
 			<h2 id="titreProjet">Mes Projets</h2>
-			<a href="#modal1" class="btnmodifier" style="display: none;">
+			<a href="#modal1" class="btnmodifier" data-toggle="modal" data-target="modal1" style="display: none;">
 				<i class="fa-regular fa-pen-to-square"></i> Modifier
 			</a>
 
+			<!-- ... Fenêtre Modale 1 -->
 			<aside id="modal1" class="modal" aria-hidden="true" role="dialog" aria-labelledby="titlemodal"
-				style="display: none;">
+				style="display: none !important;">
 				<div class="modal-wrapper modalStop">
 					<button class="closeModal"><i class="fa-solid fa-xmark"></i>Fermer la boite modale</button>
 					<h3 id="titlemodal">Galerie photo</h3>
 					<div class="contenuModal"></div>
-					<button class="btnModal">Ajouter une photo</button>
+					<button class="btnModal" data-toggle="modal" data-target="modal2">Ajouter une photo</button>
 				</div>
 			</aside>
 
+			<!-- ... Fenêtre Modale 2 -->
 			<aside id="modal2" class="modal" aria-hidden="true" role="dialog" aria-labelledby="titlemodal2"
-				style="display: none;">
+				style="display: none !important;">
 				<div class="modal-wrapper modalStop">
 					<button class="backModal"><i class="fa-solid fa-arrow-left"></i></button>
 					<button class="closeModal"><i class="fa-solid fa-xmark"></i>Fermer la boite modale</button>
 					<h3 id="titlemodal">Ajout photo</h3>
 
-					<!-- ... Contenu de la seconde modale pour ajouter une photo ... -->
-					
+					<!-- ... Formulaire de la seconde modale pour ajouter un projet ... -->
+
 					<form id="photoForm" method="post" enctype="multipart/form-data">
 						<div class="upload-container">
 							<input type="file" id="imageUpload" name="image" accept="image/png, image/jpeg" hidden />

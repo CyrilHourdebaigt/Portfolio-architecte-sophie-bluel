@@ -423,7 +423,7 @@ form div input {
 
 .modal {
 	position: fixed;
-	display: flex;
+	display: flex !important;
 	align-items: center;
 	justify-content: center;
 	top: 0;
@@ -448,9 +448,10 @@ form div input {
 	position: relative;
 	top: 0px;
 	right: -330px;
+	padding: 20px;
 	font-size: 0;
 	border: none;
-	background-color: white;
+	background-color: green;
 }
 
 .closeModal i {
@@ -550,6 +551,7 @@ form div input {
 	left: -330px;
 	font-size: 25px;
 	border: none;
+	background-color: white;
 }
 
 .backModal:hover {
@@ -644,6 +646,7 @@ form div input {
 
   #title {
 	padding: 0;
+	padding-left: 15px;
 	height: 39px;
   }
 
