@@ -174,30 +174,28 @@ const openModal = function (modalId) {
 
 // Fonction pour montrer la modale
 const showModal = function (modal) {
-    modal.style.display = 'block';
+    modal.style.display = 'flex';
     modal.setAttribute("aria-hidden", "false");
     modal.setAttribute("aria-modal", "true");
 }
 
-// Fonction pour fermer une modale spécifique
-//
+
 // Fermer toutes les modales
-// const closeModalById = function (modalId) {
-//     const modal = document.getElementById(modalId);
-//     if (modal) {
-//         modal.style.display = 'none';
-//         modal.setAttribute("aria-hidden", "true");
-//         modal.removeAttribute("aria-modal");
-//     }
-// }
+const closeModalById = function (modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.style.display = 'none';
+        modal.setAttribute("aria-hidden", "true");
+        modal.removeAttribute("aria-modal");
+    }
+}
 
 // Fermer toutes les modales
 const closeAllModals = function () {
     document.querySelectorAll('.modal').forEach(modal => {
-        modal.style.display = 'none !important';
-        console.log(modal);
-        //modal.setAttribute('aria-hidden', 'true');
-        //modal.removeAttribute('aria-modal');
+        modal.style.display = 'none';
+        modal.setAttribute('aria-hidden', 'true');
+        modal.removeAttribute('aria-modal');
     });
 }
 
@@ -224,7 +222,7 @@ let backModalButton = document.querySelector('.backModal');
 if (backModalButton) {
     backModalButton.addEventListener("click", function (e) {
         e.preventDefault(); // Prévenir le comportement par défaut du bouton
-        //closeModalById('modal2'); // Fermer la modal2 par ID
+        closeModalById('modal2'); // Fermer la modal2 par ID
         openModal('modal1'); // Ouvrir la modal1 par ID
     });
 }
