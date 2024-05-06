@@ -44,7 +44,7 @@ fetch("http://localhost:5678/api/works")
                 let figureprojet = document.createElement('figure')
 
                 figureprojet.setAttribute("category-id", work.categoryId);
-
+                figureprojet.id = work.id
                 let titre = document.createElement("h4")
                 titre.textContent = work.title
                 let image = document.createElement("img")
@@ -98,6 +98,7 @@ function gererInterfaceLogInOrLogOut() {
     const barreFiltresProjet = document.querySelector(".filtreProjet");
     const header = document.querySelector("header");
 
+    // si tu es connecté 
     if (token) {
         // Si un token est présent, afficher le logout et masquer le login
         logoutLink.style.display = "inline";
@@ -116,10 +117,13 @@ function gererInterfaceLogInOrLogOut() {
 
     } else {
         // Si aucun token n'est présent, afficher le login et masquer le logout, la barre noir et le bouton modifier
+        console.log(logoutLink);
         logoutLink.style.display = "none";
         loginLink.style.display = "inline";
         barreBlack.style.display = "none";
-        btnmodifier.style.display = "none";
+        if (btnmodifier !== null) {
+            btnmodifier.style.display = "none" ;
+        }
     }
 
     // Ajoutez un gestionnaire d'événements pour le lien de déconnexion
@@ -149,13 +153,13 @@ const openModal = function (modalId) {
                         figure.setAttribute("category-id", work.categoryId);
                         figure.setAttribute("work-id", work.id);
                         figure.innerHTML = `<img src="${work.imageUrl}" alt="${work.title}">`;
-                        
+
                         let deleteButton = document.createElement("button");
                         deleteButton.classList.add("delete-button");
                         deleteButton.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
                         deleteButton.onclick = () => deleteWork(work.id, figure);
                         figure.appendChild(deleteButton);
-                        
+
                         projetsModal.appendChild(figure);
                     });
                     // Afficher la modale après le chargement des données
@@ -210,7 +214,6 @@ document.querySelectorAll("[data-toggle='modal']").forEach(element => {
 
 // Ajouter des écouteurs pour les boutons de fermeture dans les modales
 let closebuttonModal = document.querySelectorAll(".closeModal")
-console.log(closebuttonModal);
 document.querySelectorAll(".closeModal").forEach(button => {
     button.addEventListener("click", function () {
         closeAllModals(); // Fermer toutes les modales
@@ -221,7 +224,7 @@ document.querySelectorAll(".closeModal").forEach(button => {
 let backModalButton = document.querySelector('.backModal');
 if (backModalButton) {
     backModalButton.addEventListener("click", function (e) {
-        e.preventDefault(); // Prévenir le comportement par défaut du bouton
+        e.preventDefault(); // Prévenir le comportement par défaut du boutton
         closeModalById('modal2'); // Fermer la modal2 par ID
         openModal('modal1'); // Ouvrir la modal1 par ID
     });
@@ -230,7 +233,8 @@ if (backModalButton) {
 // Supprimer un projet de la gallery
 
 function deleteWork(workId, figureElement) {
-    // Confirmer avec l'utilisateur avant la suppression
+
+    // Confirmer avant la suppression
     if (!confirm("Êtes-vous sûr de vouloir supprimer ce projet ?")) {
         return;
     }
@@ -250,9 +254,15 @@ function deleteWork(workId, figureElement) {
     })
         .then(response => {
             if (response.ok) {
+
                 // Suppression de l'élément de la modale
                 figureElement.remove();
+
+                // Suppression de l'élément de la page d'accueil aussi
+                let figureHome = document.querySelector(`.gallery figure[id ="${workId}"]`);
+                figureHome.remove();
                 console.log(`Le projet avec l'ID ${workId} a été supprimé.`);
+
             } else if (response.status === 401) {
                 // Message si l'utilisateur n'est pas autorisé à supprimer le projet
                 console.error("Action non autorisée. Assurez-vous d'être connecté avec les bonnes autorisations.");
@@ -265,9 +275,6 @@ function deleteWork(workId, figureElement) {
             // Message pour les erreurs de connexion
             console.error("Erreur lors de l'appel API:", error);
         });
-    if (event) {
-        event.preventDefault();
-    }
 }
 
 let uploadbtn = document.querySelector('.upload-btn')
@@ -343,13 +350,29 @@ if (photoForm !== null) {
                 // Créez une nouvelle figure et une image dans votre galerie
                 const gallery = document.querySelector('.gallery');
                 const figure = document.createElement('figure');
+
+                //ajout l'id  et categorie à la figure
+                figure.id = data.id
+                category.id = data.categoryId
+
+
+                // ajout titre
+                let newtitle = document.createElement("h4")
+                newtitle.textContent = data.title
+
                 const img = document.createElement('img');
                 img.src = imageUrl;
                 img.alt = 'Nouvelle image ajoutée';
 
-                // Ajoutez l'image à la figure et la figure à la galerie
+                // Ajoutez l'image, la figure et l'id et le titre'
+
                 figure.appendChild(img);
+                figure.appendChild(newtitle);
                 gallery.appendChild(figure);
+
+                // Fermer la modale
+                closeAllModals();
+
             })
             .catch(error => {
                 console.error('Il y a eu un problème avec l’opération fetch: ' + error.message);
