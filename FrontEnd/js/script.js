@@ -75,11 +75,14 @@ function filterWorksByCategory() {
                 }
                 let workCategoryId = work.getAttribute("category-id")
                 if (workCategoryId == categorieIdDeMonBouton) {
-                    work.style.display = 'block'; // Afficher l'élément
+                    // Afficher l'élément
+                    work.style.display = 'block'; 
                 } else if (categorieIdDeMonBouton === "0") {
-                    work.style.display = 'block'; // Si j'appuie sur Tous Affiche tous car tous == 0
+                    // Si j'appuie sur Tous Affiche tous car tous == 0
+                    work.style.display = 'block'; 
                 } else {
-                    work.style.display = 'none'; // Masquer l'élément
+                    // Masquer l'élément
+                    work.style.display = 'none'; 
                 }
             });
         })
@@ -90,6 +93,7 @@ function gererInterfaceLogInOrLogOut() {
 
     // Récupération du token
     const token = localStorage.getItem("token");
+
     const loginLink = document.getElementById("loginLink");
     const logoutLink = document.getElementById("logoutLink");
     const barreBlack = document.querySelector(".barreBlack");
@@ -126,12 +130,12 @@ function gererInterfaceLogInOrLogOut() {
         }
     }
 
-    // Ajoutez un gestionnaire d'événements pour le lien de déconnexion
+    // Ajout d'un événement pour le lien de déconnexion
     logoutLink.addEventListener("click", function (e) {
         e.preventDefault(); // Empêche le comportement par défaut du lien
         // Supprimer le token du localStorage
         localStorage.removeItem("token");
-        // Rediriger vers la page de login ou tout autre comportement que vous souhaitez
+        // Redirection vers la page de login
         window.location.href = "login.html";
     });
 }
@@ -183,8 +187,7 @@ const showModal = function (modal) {
     modal.setAttribute("aria-modal", "true");
 }
 
-
-// Fermer toutes les modales
+// Fermer les modales avec l'id
 const closeModalById = function (modalId) {
     const modal = document.getElementById(modalId);
     if (modal) {
@@ -212,7 +215,7 @@ document.querySelectorAll("[data-toggle='modal']").forEach(element => {
     });
 });
 
-// Ajouter des écouteurs pour les boutons de fermeture dans les modales
+// Ajout des écouteurs pour les boutons de fermeture dans les modales
 let closebuttonModal = document.querySelectorAll(".closeModal")
 document.querySelectorAll(".closeModal").forEach(button => {
     button.addEventListener("click", function () {
@@ -296,12 +299,12 @@ if (imageUpload !== null) {
 
             reader.onload = function (e) {
 
-                // Sélectionnez le conteneur qui a la classe upload-icon
+                // Sélection du conteneur qui à la classe upload-icon
                 const uploadIconContainer = document.querySelector('.upload-icon');
                 if (uploadIconContainer) {
                     uploadIconContainer.style.display = 'none'; // Cacher les éléments à l'intérieur
                 }
-                // Afficher l'image
+                // Affichage image
                 const imagePreview = document.getElementById('previewImage');
                 if (imagePreview) {
                     imagePreview.src = e.target.result;
@@ -344,28 +347,27 @@ if (photoForm !== null) {
             })
             .then(data => {
                 console.log(data);
-                // La réponse de l'API inclut un champ 'imageUrl' avec l'URL de l'image téléchargée
+                // La réponse inclut un champ 'imageUrl' avec l'URL de l'image téléchargée
                 const imageUrl = data.imageUrl;
 
-                // Créez une nouvelle figure et une image dans votre galerie
+                // Création nouvelle figure et image dans gallery
                 const gallery = document.querySelector('.gallery');
                 const figure = document.createElement('figure');
 
-                //ajout l'id  et categorie à la figure
+                // Ajout l'id  et categorie à la figure
                 figure.id = data.id
                 category.id = data.categoryId
 
-
-                // ajout titre
-                let newtitle = document.createElement("h4")
+                // Ajout titre
+                const newtitle = document.createElement("h4")
                 newtitle.textContent = data.title
 
+                // Ajout image
                 const img = document.createElement('img');
                 img.src = imageUrl;
                 img.alt = 'Nouvelle image ajoutée';
 
-                // Ajoutez l'image, la figure et l'id et le titre'
-
+                // Ajoutez l'image, le titre et la figure 
                 figure.appendChild(img);
                 figure.appendChild(newtitle);
                 gallery.appendChild(figure);
@@ -375,8 +377,8 @@ if (photoForm !== null) {
 
             })
             .catch(error => {
+                // Affichez un message d'erreur
                 console.error('Il y a eu un problème avec l’opération fetch: ' + error.message);
-                // Affichez un message d'erreur à l'utilisateur ici si nécessaire
             });
     });
 }
