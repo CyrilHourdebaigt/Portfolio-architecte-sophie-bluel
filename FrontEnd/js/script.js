@@ -1,20 +1,26 @@
-fetch("http://localhost:5678/api/categories")
+    // Ma requête HTTP GET à l'URL fournie dans le swagger
+    fetch("http://localhost:5678/api/categories")
+    // Je transforme la réponse JSON
     .then(res => res.json())
     .then(categories => {
+        // Introduction du filtre "Tous" que je mets au début du tableau
         let objetTous = { id: 0, name: "Tous" };
         categories.unshift(objetTous);
 
+        // Création de la div qui contiendra les boutons de filtrage
         let filtresDiv = document.createElement("div");
         filtresDiv.classList.add("filtreProjet");
 
+        // J'insère la div dans le DOM
         let titreH2 = document.querySelector("#portfolio h2");
         if (titreH2) {
             titreH2.parentNode.insertBefore(filtresDiv, titreH2.nextElementSibling);
 
-
+            // Conversion du tableau grâce à Set pour éviter les doublons
             let projets = document.querySelector(".filtreProjet");
             let uniqueCategories = new Set(categories.map(categorie => categorie.name))
             uniqueCategories.forEach(uniqueCategory => {
+                // Création d'un bouton pour chaque catégorie
                 let buttonfiltre = document.createElement("button");
                 buttonfiltre.classList.add("filtreBouton");
                 buttonfiltre.innerHTML = uniqueCategory
@@ -22,6 +28,7 @@ fetch("http://localhost:5678/api/categories")
                 projets.appendChild(buttonfiltre);
             })
 
+            // Assignation à chaque bouton de son id par rapport à son nom
             let buttonfiltres = document.getElementsByClassName('filtreBouton')
             for (let button of buttonfiltres) {
                 for (let category of categories) {
@@ -37,22 +44,25 @@ fetch("http://localhost:5678/api/categories")
 fetch("http://localhost:5678/api/works")
     .then(res => res.json())
     .then(works => {
-
+        // Selection du conteneur qui affiche les projets
         let projets = document.querySelector(".gallery")
         if (projets) {
             for (let work of works) {
+                // Création d'un élement figure pour chaque projet avec un titre et une image
                 let figureprojet = document.createElement('figure')
-
+                // Je définie la catégorie du projet et l'id de chaque projet
                 figureprojet.setAttribute("category-id", work.categoryId);
                 figureprojet.id = work.id
+                // Récupération du titre
                 let titre = document.createElement("h4")
                 titre.textContent = work.title
+                // Récupération de l'image
                 let image = document.createElement("img")
                 image.src = work.imageUrl
 
                 figureprojet.appendChild(image)
                 figureprojet.appendChild(titre)
-
+                // J'ajoute l'ensemble au conteneur
                 projets.appendChild(figureprojet)
             }
         }
@@ -61,13 +71,19 @@ fetch("http://localhost:5678/api/works")
     })
 
 function filterWorksByCategory() {
+    // Je récupère mes boutons pour filtrer
     let buttonfiltres = document.getElementsByClassName('filtreBouton')
+    // Je récupère tous les élements figure
     let works = document.querySelectorAll("figure")
 
     for (let button of buttonfiltres) {
+        // J'ajoute un écouteur d'évènement lorsqu'on clique sur un bouton
         button.addEventListener("click", (event) => {
+            // Je stocke le bouton qui a été cliqué
             let monBouton = event.target
+            // Je récupère la catégorie associée à ce bouton
             let categorieIdDeMonBouton = button.getAttribute("category-id")
+            // Pour chaque projet la fonction work est exécutée
             works.forEach(function (work) {
 
                 if (work.closest('#introduction')) {
@@ -143,7 +159,9 @@ function gererInterfaceLogInOrLogOut() {
 // Fenêtre modale
 
 const openModal = function (modalId) {
+    // Je récupère la modale grâce à son ID
     const modal = document.getElementById(modalId);
+    // Je vérifie que la modale existe
     if (modal) {
         // Vérifie si la modale nécessite le chargement des données avant de s'afficher
         if (modalId === "modal1") {
@@ -153,17 +171,26 @@ const openModal = function (modalId) {
                     let projetsModal = document.querySelector(".contenuModal");
                     projetsModal.innerHTML = ''; // Nettoyer les contenus précédents
                     works.forEach(work => {
+                        // Je crée un élément figure pour voir les projets
                         let figure = document.createElement('figure');
+                        // Je lui attribue l'ID de sa catégorie
                         figure.setAttribute("category-id", work.categoryId);
+                        // Je lui attribue un ID unique
                         figure.setAttribute("work-id", work.id);
+                        // J'inclus une image au projet
                         figure.innerHTML = `<img src="${work.imageUrl}" alt="${work.title}">`;
 
+                        // Je crée un bouton pour supprimer un projet
                         let deleteButton = document.createElement("button");
+                        // Je lui attribue une classe
                         deleteButton.classList.add("delete-button");
+                        // J'intègre le logo poubelle de FontAwesome
                         deleteButton.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
+                        // Au click sur le bouton je fais appel à la fonction deleteWork
                         deleteButton.onclick = () => deleteWork(work.id, figure);
+                        // J'ajoute le bouton à la figure
                         figure.appendChild(deleteButton);
-
+                        // J'ajoute la figure au conteneur dans la modale
                         projetsModal.appendChild(figure);
                     });
                     // Afficher la modale après le chargement des données
@@ -211,7 +238,7 @@ document.querySelectorAll("[data-toggle='modal']").forEach(element => {
     element.addEventListener("click", function (e) {
         const modalId = element.getAttribute('data-target');
         e.preventDefault(); // Empêcher le comportement par défaut du lien
-        openModal(modalId);
+        openModal(modalId); // Ouvre la modale correspondante
     });
 });
 
@@ -235,6 +262,7 @@ if (backModalButton) {
 
 // Supprimer un projet de la gallery
 
+// Id du projet à supprimer et la figure du DOM
 function deleteWork(workId, figureElement) {
 
     // Confirmer avant la suppression
@@ -242,12 +270,14 @@ function deleteWork(workId, figureElement) {
         return;
     }
 
+    // Je vérifie que je suis connecté
     const token = localStorage.getItem("token");
     if (!token) {
         console.log("Vous devez être connecté pour supprimer un projet.");
         return;
     }
 
+    // Je fais une requête avec la méthode DELETE
     fetch(`http://localhost:5678/api/works/${workId}`, {
         method: 'DELETE',
         headers: {
@@ -280,21 +310,26 @@ function deleteWork(workId, figureElement) {
         });
 }
 
+// Je selectionne mon bouton dans le DOM
 let uploadbtn = document.querySelector('.upload-btn')
+// Je vérifie que mon bouton existe
 if (uploadbtn !== null) {
     uploadbtn.addEventListener("click", function () {
+        // Au click j'ouvre une fenêtre qui me permet de télécharger un fichier
         document.getElementById('imageUpload').click();
     })
 }
 
-// Affichage de l'image à la place du logo
+// Prévisualisation de l'image
 
 let imageUpload = document.getElementById('imageUpload')
 if (imageUpload !== null) {
     imageUpload.addEventListener('change', function (event) {
-
+        // Je récupère le fichier selectionné
         const file = event.target.files[0];
+        // Je m'assure qu'il soit selectionné
         if (file) {
+            // J'utilise FileReader pour lire le contenu du fichier
             const reader = new FileReader();
 
             reader.onload = function (e) {

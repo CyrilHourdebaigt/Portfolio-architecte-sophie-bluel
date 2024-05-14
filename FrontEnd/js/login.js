@@ -18,34 +18,29 @@ function ajoutListenerEnvoyerLog() {
             headers: { "Content-Type": "application/json" },
             body: chargeUtile
         })
-            
+
             .then(res => {
                 if (res.status === 401) {
                     const inputError = document.querySelector(".buttonlog");
                     inputError.setCustomValidity("Non autorisé")
                 }
-                if(res.status === 200)
-                {
+                if (res.status === 200) {
                     return res.json()
                 }
-                else{
+                else {
                     const inputError = document.querySelector(".buttonlog");
                     inputError.setCustomValidity("Erreur dans l’identifiant ou le mot de passe")
                 }
             })
             .then(data => {
                 console.log(data);
-                    // Stockage du token dans le localStorage
-                    window.localStorage.setItem("token", data.token);
-                    // Redirection vers la page d'accueil
-                    window.location.href = 'index.html';
-                    
+                // Stockage du token dans le localStorage
+                window.localStorage.setItem("token", data.token);
+                // Redirection vers la page d'accueil
+                window.location.href = 'index.html';
+
             })
-
-
     });
-
-
 }
 
 ajoutListenerEnvoyerLog()
