@@ -12,7 +12,7 @@ function ajoutListenerEnvoyerLog() {
         // Création de la charge utile au format JSON
         const chargeUtile = JSON.stringify(identifiants);
 
-        // Appel de fetch avec les information nécessaires
+        // fetch pour appel vers l'API avec les information nécessaires
         fetch("http://localhost:5678/api/users/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },

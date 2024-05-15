@@ -1,4 +1,4 @@
-    // Ma requête HTTP GET à l'URL fournie dans le swagger
+    // Ma requête HTTP GET à l'API fournie dans le swagger
     fetch("http://localhost:5678/api/categories")
     // Je transforme la réponse JSON
     .then(res => res.json())
