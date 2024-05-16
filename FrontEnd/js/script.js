@@ -1,5 +1,5 @@
-    // Ma requête HTTP GET à l'API fournie dans le swagger
-    fetch("http://localhost:5678/api/categories")
+// Ma requête HTTP GET à l'API fournie dans le swagger
+fetch("http://localhost:5678/api/categories")
     // Je transforme la réponse JSON
     .then(res => res.json())
     .then(categories => {
@@ -74,8 +74,7 @@ function filterWorksByCategory() {
     // Je récupère mes boutons pour filtrer
     let buttonfiltres = document.getElementsByClassName('filtreBouton')
     // Je récupère tous les élements figure
-    let works = document.querySelectorAll("figure")
-
+    let works = document.querySelectorAll(".gallery figure")
     for (let button of buttonfiltres) {
         // J'ajoute un écouteur d'évènement lorsqu'on clique sur un bouton
         button.addEventListener("click", (event) => {
@@ -85,20 +84,16 @@ function filterWorksByCategory() {
             let categorieIdDeMonBouton = button.getAttribute("category-id")
             // Pour chaque projet la fonction work est exécutée
             works.forEach(function (work) {
-
-                if (work.closest('#introduction')) {
-                    return; // Empêche de filtrer la figure dans section "introduction"
-                }
                 let workCategoryId = work.getAttribute("category-id")
                 if (workCategoryId == categorieIdDeMonBouton) {
                     // Afficher l'élément
-                    work.style.display = 'block'; 
+                    work.style.display = 'block';
                 } else if (categorieIdDeMonBouton === "0") {
                     // Si j'appuie sur Tous Affiche tous car tous == 0
-                    work.style.display = 'block'; 
+                    work.style.display = 'block';
                 } else {
                     // Masquer l'élément
-                    work.style.display = 'none'; 
+                    work.style.display = 'none';
                 }
             });
         })
@@ -109,7 +104,6 @@ function gererInterfaceLogInOrLogOut() {
 
     // Récupération du token
     const token = localStorage.getItem("token");
-
     const loginLink = document.getElementById("loginLink");
     const logoutLink = document.getElementById("logoutLink");
     const barreBlack = document.querySelector(".barreBlack");
@@ -142,7 +136,7 @@ function gererInterfaceLogInOrLogOut() {
         loginLink.style.display = "inline";
         barreBlack.style.display = "none";
         if (btnmodifier !== null) {
-            btnmodifier.style.display = "none" ;
+            btnmodifier.style.display = "none";
         }
     }
 
@@ -166,7 +160,11 @@ const openModal = function (modalId) {
         // Vérifie si la modale nécessite le chargement des données avant de s'afficher
         if (modalId === "modal1") {
             fetch("http://localhost:5678/api/works")
-                .then(res => res.json())
+                .then(res => {
+                    if (res.ok) {
+                        res.json()
+                    }
+                })
                 .then(works => {
                     let projetsModal = document.querySelector(".contenuModal");
                     projetsModal.innerHTML = ''; // Nettoyer les contenus précédents

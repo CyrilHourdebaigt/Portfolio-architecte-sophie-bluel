@@ -2,13 +2,11 @@ function ajoutListenerEnvoyerLog() {
     const formulaireLog = document.querySelector(".loginform");
     formulaireLog.addEventListener("submit", function (event) {
         event.preventDefault();
-
         // Création de l'objet du Log
         const identifiants = {
             email: event.target.querySelector("[name=email]").value,
             password: event.target.querySelector("[name=password]").value,
         };
-
         // Création de la charge utile au format JSON
         const chargeUtile = JSON.stringify(identifiants);
 
@@ -18,7 +16,6 @@ function ajoutListenerEnvoyerLog() {
             headers: { "Content-Type": "application/json" },
             body: chargeUtile
         })
-
             .then(res => {
                 if (res.status === 401) {
                     const inputError = document.querySelector(".buttonlog");
@@ -38,10 +35,7 @@ function ajoutListenerEnvoyerLog() {
                 window.localStorage.setItem("token", data.token);
                 // Redirection vers la page d'accueil
                 window.location.href = 'index.html';
-
             })
     });
 }
-
 ajoutListenerEnvoyerLog()
-

@@ -188,7 +188,7 @@ nav li {
 }
 
 li:hover {
-	color: #B1663C;
+	font-weight: bold;
 }
 
 #introduction {
